@@ -14,10 +14,10 @@ public class ExternalOfficer {
     @Column(name = "externalofficer_id")
     private Integer id;
 
-    @Column(name = "externalofficer_name")
+    @Column(name = "externalofficer_name", unique = true, nullable = false)
     private String name;
 
-    @Column (name = "externalofficer_login")
+    @Column (name = "externalofficer_login", unique = true, nullable = false)
     private String login;
 
     @Column (name = "externalofficer_password")

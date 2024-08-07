@@ -22,23 +22,27 @@ public class ExternalOfficerService {
         return externalOfficerRepository.findAll();
     }
 
-    public ExternalOfficer getExternalOfficerById(Long id) {
-        Optional<ExternalOfficer> externalOfficerObj = externalOfficerRepository.findById(id);
-        return externalOfficerObj.orElseThrow(() ->
-                new RuntimeException("Erro ao encontrar o objeto" + "ID: " + id));
+    public Optional<ExternalOfficer> getExternalOfficerById(Long id) {
+        return externalOfficerRepository.findById(id);
     }
 
     public ExternalOfficer updateExOfficer(Long id, ExternalOfficer externalOfficerObj) {
-        ExternalOfficer entityExOfficer = externalOfficerRepository.getReferenceById(id);
-        updateData(entityExOfficer, externalOfficerObj);
-        return externalOfficerRepository.save(entityExOfficer);
+        Optional<ExternalOfficer> officerToBeUpdated = externalOfficerRepository.findById(id);
+
+        if (officerToBeUpdated.isPresent()) {
+            ExternalOfficer officerUpdated = officerToBeUpdated.get();
+
+            officerUpdated.setName(externalOfficerObj.getName());
+            officerUpdated.setLogin(externalOfficerObj.getLogin());
+            officerUpdated.setPassword(externalOfficerObj.getPassword());
+
+            return externalOfficerRepository.save(officerUpdated);
+        } else {
+
+            throw new  RuntimeException("Não foi possível atualizar esse funcionário | ID (" + id + ") não encontrado");
+        }
     }
 
-    private void updateData(ExternalOfficer newEntity, ExternalOfficer externalOfficerObj) {
-        newEntity.setName(externalOfficerObj.getName());
-        newEntity.setLogin(externalOfficerObj.getLogin());
-        newEntity.setPassword(externalOfficerObj.getPassword());
-    }
 
     public void deleteExternalOfficer(Long id) {
         if (externalOfficerRepository.existsById(id)) {
