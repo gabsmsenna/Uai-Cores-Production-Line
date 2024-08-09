@@ -2,12 +2,20 @@ package com.gabriel.UaiCores_ProductionLine.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Client implements Serializable {
 
     @Id
@@ -21,10 +29,4 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
-    public Client () {}
-
-    public Client(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

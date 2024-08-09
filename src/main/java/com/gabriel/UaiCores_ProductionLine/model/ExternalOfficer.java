@@ -3,11 +3,15 @@ package com.gabriel.UaiCores_ProductionLine.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
+import java.io.Serializable;
+
+@Data
 @Entity
 @Table(name = "external_officer")
-public class ExternalOfficer {
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class ExternalOfficer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +26,4 @@ public class ExternalOfficer {
 
     @Column (name = "externalofficer_password")
     private String password;
-
-    public ExternalOfficer(String name, String login, String password) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
-    }
-
-    public ExternalOfficer() {
-
-    }
 }
