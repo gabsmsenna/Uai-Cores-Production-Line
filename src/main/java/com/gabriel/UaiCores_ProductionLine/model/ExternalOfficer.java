@@ -16,7 +16,7 @@ public class ExternalOfficer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "externalofficer_id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "externalofficer_name", unique = true, nullable = false)
     private String name;
@@ -24,6 +24,16 @@ public class ExternalOfficer implements Serializable {
     @Column (name = "externalofficer_login", unique = true, nullable = false)
     private String login;
 
-    @Column (name = "externalofficer_password")
+    @Column(name = "externalofficer_password", nullable = false)
     private String password;
+
+    public void setPassword(String password) {
+        this.password = hashPassword(password);
+    }
+
+    private String hashPassword(String password) {
+        // Implementar o hashing da senha, por exemplo, usando BCrypt
+        return password; // Alterar para o resultado do hash
+    }
+
 }

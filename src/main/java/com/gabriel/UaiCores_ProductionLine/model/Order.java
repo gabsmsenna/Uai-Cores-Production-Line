@@ -25,11 +25,9 @@ public class Order implements Serializable {
     private Long id;
 
     @NotNull
-    @NotEmpty
     private Instant orderEntryDate;
 
     @NotNull
-    @NotEmpty
     private Instant orderDeliveryDate;
 
     private String orderStatus;
@@ -37,11 +35,10 @@ public class Order implements Serializable {
     @NotNull
     @NotEmpty
     @ManyToOne
+    @JoinColumn(name = "client_id")
     public Client client;
 
-    @OneToMany
-    @NotNull
-    @NotEmpty
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Task> tasks = new ArrayList<>();
 
 

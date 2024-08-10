@@ -1,13 +1,22 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Entity
-public class Task implements Serializable {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class Task {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -16,7 +25,7 @@ public class Task implements Serializable {
 
     @Column (name = "task_amount")
     @NotNull
-    @NotEmpty
+    @Min(1)
     private Integer amount;
 
     @Column (name = "task_name")
@@ -29,7 +38,7 @@ public class Task implements Serializable {
     @NotEmpty
     private String description;
 
-    @Column (name = "task_verseColor")
+    @Column (name = "task_verse_color")
     @NotNull
     @NotEmpty
     private String verseColor;
@@ -39,14 +48,7 @@ public class Task implements Serializable {
     @NotEmpty
     private String material;
 
-    public Task() {}
-
-    public Task(Long id, Integer amount, String name, String description, String verseColor, String material) {
-        this.id = id;
-        this.amount = amount;
-        this.name = name;
-        this.description = description;
-        this.verseColor = verseColor;
-        this.material = material;
-    }
+    @ManyToOne
+    @JoinColumn (name = "order_id")
+    private Order order;
 }

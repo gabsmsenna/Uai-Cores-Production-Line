@@ -16,14 +16,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Client implements Serializable {
+public class Client {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "client_id")
+    private Long id;
 
-    @Column
     @NotEmpty
+    @Column(name = "client_name")
     private String name;
 
     @OneToMany(mappedBy = "client")
