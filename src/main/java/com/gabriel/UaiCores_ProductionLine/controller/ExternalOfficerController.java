@@ -2,7 +2,6 @@ package com.gabriel.UaiCores_ProductionLine.controller;
 
 import com.gabriel.UaiCores_ProductionLine.model.ExternalOfficer;
 import com.gabriel.UaiCores_ProductionLine.service.ExternalOfficerService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/officer")
+@RequestMapping("/api/v1/officer")
 public class ExternalOfficerController {
 
     @Autowired
@@ -48,7 +47,7 @@ public class ExternalOfficerController {
         if (optionalExternalOfficer.isPresent()) {
             return new ResponseEntity<>(optionalExternalOfficer.get(), HttpStatus.OK);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Desculpe, o id: " + id + ", não foi encontrado, forneça um id válido");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
