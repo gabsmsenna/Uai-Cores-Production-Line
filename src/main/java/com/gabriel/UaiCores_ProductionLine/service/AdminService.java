@@ -32,6 +32,7 @@ public class AdminService {
             AdminUser adminUserUpdated = adminUserToBeUpdated.get();
 
             adminUserUpdated.setName(adminUser.getName());
+            adminUserUpdated.setLogin(adminUser.getLogin());
             adminUserUpdated.setPassword(adminUser.getPassword());
 
             return adminUserRepository.save(adminUserUpdated);

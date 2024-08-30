@@ -20,8 +20,12 @@ public class AdminUser {
     @Column (unique = true, nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String login;
+
     @Column (nullable = false)
     private String password;
+
 
     public void setPassword(String password) {
         this.password = hashPassword(password);
