@@ -2,9 +2,11 @@ package com.gabriel.UaiCores_ProductionLine.controller;
 
 import com.gabriel.UaiCores_ProductionLine.model.AdminUser;
 import com.gabriel.UaiCores_ProductionLine.service.AdminService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -29,14 +31,12 @@ public class AdminController {
 
     @PostMapping()
     public ResponseEntity<AdminUser> postAdminUser(@RequestBody  AdminUser adminUser) {
-
         try {
             AdminUser adminUserObj = adminService.createAdminUser(adminUser);
-
             return new ResponseEntity<>(adminUserObj, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(adminUser);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
     }
 }

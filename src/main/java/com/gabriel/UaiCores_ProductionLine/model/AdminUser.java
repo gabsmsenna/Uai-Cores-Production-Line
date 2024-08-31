@@ -27,11 +27,9 @@ public class AdminUser {
     private String password;
 
 
-    public void setPassword(String password) {
-        this.password = hashPassword(password);
-    }
-
-    private String hashPassword(String password) {
-        return password;
+    public AdminUser(String name, String login, String password) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
     }
 }
