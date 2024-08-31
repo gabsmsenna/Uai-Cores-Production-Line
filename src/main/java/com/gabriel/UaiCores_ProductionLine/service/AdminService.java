@@ -26,8 +26,8 @@ public class AdminService {
         return adminUserRepository.findAll();
     }
 
-    public AdminUser getAdminUserById(Long id) {
-        return adminUserRepository.findById(id).get();
+    public Optional<AdminUser> getAdminUserById(Long id) {
+        return adminUserRepository.findById(id);
     }
 
     public AdminUser updateAdminUser(Long id, AdminUser adminUser) {

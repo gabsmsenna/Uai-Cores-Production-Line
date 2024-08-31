@@ -40,7 +40,7 @@ public class ExternalOfficerController {
         return new ResponseEntity<>(externalOfficers, HttpStatus.OK);
     }
 
-    @GetMapping("/getofficerbyid/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<ExternalOfficer> optionalExternalOfficer = externalOfficerService.getExternalOfficerById(id);
 

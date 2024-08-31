@@ -13,8 +13,10 @@ import lombok.NoArgsConstructor;
 @Table (name = "admin_user")
 public class AdminUser {
 
+
+
     @Id
-    @GeneratedValue
+    @GeneratedValue()
     private Long id;
 
     @Column (unique = true, nullable = false)
