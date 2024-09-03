@@ -1,5 +1,6 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.gabriel.UaiCores_ProductionLine.config.LocalDateDeserializer;
 import jakarta.persistence.*;

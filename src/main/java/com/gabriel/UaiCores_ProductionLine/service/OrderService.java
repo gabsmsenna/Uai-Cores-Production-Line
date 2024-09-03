@@ -38,17 +38,10 @@ public class OrderService {
 
 
     public Optional<Order> getOrderById(Long id) {
-        if (!orderRepository.findById(id).isPresent()) {
-            return Optional.empty();
-        }
 
-        try {
-            Optional<Order> order = orderRepository.findById(id);
-            return order;
-        } catch (EntityNotFoundException e) {
-            System.err.println("Erro ao encontrar o id " + id + ": " + e.getMessage());
-            return Optional.empty();
-        }
+        Optional<Order> order = orderRepository.findById(id);
+        return order;
+
     }
 
     @Transactional

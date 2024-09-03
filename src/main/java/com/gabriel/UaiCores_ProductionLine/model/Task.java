@@ -1,5 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -50,5 +52,6 @@ public class Task {
 
     @ManyToOne
     @JoinColumn (name = "order_id")
+    @JsonIgnore
     private Order order;
 }

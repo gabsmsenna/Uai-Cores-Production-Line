@@ -23,7 +23,7 @@ public class ClientController {
         return new ResponseEntity<>(newClient, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Client>> getAllClients() {
         List<Client> clients = this.clientService.findAllClient();
         return new ResponseEntity<>(clients, HttpStatus.OK);
