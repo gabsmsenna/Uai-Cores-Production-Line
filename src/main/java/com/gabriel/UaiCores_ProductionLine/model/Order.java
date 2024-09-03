@@ -1,5 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.gabriel.UaiCores_ProductionLine.config.LocalDateDeserializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +28,17 @@ public class Order implements Serializable {
     private Long id;
 
     @NotNull
-    private Instant orderEntryDate;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate orderEntryDate;
 
     @NotNull
-    private Instant orderDeliveryDate;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate orderDeliveryDate;
 
+    @NotEmpty
     private String orderStatus;
 
     @NotNull
-    @NotEmpty
     @ManyToOne
     @JoinColumn(name = "client_id")
     public Client client;

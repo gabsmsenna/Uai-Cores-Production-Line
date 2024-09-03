@@ -1,5 +1,6 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class Client {
     private String name;
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 
 }
