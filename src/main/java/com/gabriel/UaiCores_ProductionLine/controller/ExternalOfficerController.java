@@ -17,7 +17,7 @@ public class ExternalOfficerController {
     @Autowired
     private ExternalOfficerService externalOfficerService;
 
-    @PostMapping("/addofficer")
+    @PostMapping()
     public ResponseEntity<ExternalOfficer> addExternalOfficer(@RequestBody ExternalOfficer externalOfficer) {
 
         try {
@@ -31,7 +31,7 @@ public class ExternalOfficerController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<ExternalOfficer>> getAll() {
         if (externalOfficerService.getAllExternalOfficers().isEmpty()) {
             return ResponseEntity.notFound().build();

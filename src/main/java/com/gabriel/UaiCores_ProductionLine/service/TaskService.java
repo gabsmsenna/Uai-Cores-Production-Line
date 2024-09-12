@@ -42,4 +42,10 @@ public class TaskService {
         return Optional.of(task);
 
     }
+
+    public Task updateTask(Long id, Task task) {
+
+        return null;
+
+    }
 }
