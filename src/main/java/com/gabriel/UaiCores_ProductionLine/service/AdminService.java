@@ -3,7 +3,6 @@ package com.gabriel.UaiCores_ProductionLine.service;
 import com.gabriel.UaiCores_ProductionLine.model.AdminUser;
 import com.gabriel.UaiCores_ProductionLine.repository.AdminUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +14,7 @@ public class AdminService {
     private AdminUserRepository adminUserRepository;
 
     public AdminUser createAdminUser(AdminUser adminUser) {
-        var encoder = new BCryptPasswordEncoder();
-        var hashedPassword = encoder.encode(adminUser.getPassword());
-
-        var adminUserObj = new AdminUser(adminUser.getName(), adminUser.getLogin(), hashedPassword);
-        return adminUserRepository.save(adminUserObj);
+        return adminUserRepository.save(adminUser);
     }
 
     public List<AdminUser> getAllAdminUsers() {

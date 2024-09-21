@@ -2,9 +2,9 @@ package com.gabriel.UaiCores_ProductionLine.service;
 
 import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.repository.OrderRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +26,8 @@ public class OrderService {
     public List<Order> getAllOrders() {
 
         try {
-            List<Order> ordersList = orderRepository.findAll();
+            Sort sort = Sort.by("orderEntryDate").descending();
+            List<Order> ordersList = orderRepository.findAll(sort);
             return Collections.unmodifiableList(ordersList);
         } catch (RuntimeException error) {
             System.err.println("Erro ao buscar os pedidos do sistema. " +
@@ -39,8 +40,8 @@ public class OrderService {
 
     public Optional<Order> getOrderById(Long id) {
 
-        Optional<Order> order = orderRepository.findById(id);
-        return order;
+        Optional<Order> orderById = orderRepository.findById(id);
+        return orderById;
 
     }
 
