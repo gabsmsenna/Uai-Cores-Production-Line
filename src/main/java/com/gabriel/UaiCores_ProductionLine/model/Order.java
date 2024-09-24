@@ -1,8 +1,11 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gabriel.UaiCores_ProductionLine.config.LocalDateDeserializer;
+import com.gabriel.UaiCores_ProductionLine.config.LocalDateSerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -11,16 +14,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table (name = "order_table")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "orders")
 public class Order implements Serializable {
 
     @Id
@@ -30,10 +32,12 @@ public class Order implements Serializable {
 
     @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate orderEntryDate;
 
     @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate orderDeliveryDate;
 
     @NotEmpty

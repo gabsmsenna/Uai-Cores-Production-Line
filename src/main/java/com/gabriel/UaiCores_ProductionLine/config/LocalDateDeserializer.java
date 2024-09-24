@@ -1,10 +1,11 @@
 package com.gabriel.UaiCores_ProductionLine.config;
 
 import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,4 +20,5 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
         String date = jsonParser.getText();
         return LocalDate.parse(date, FORMATTER);
     }
+
 }
