@@ -26,29 +26,27 @@ public class Task {
     private Long id;
 
     @Column (name = "task_amount")
-    @NotNull
     @Min(1)
     private Integer amount;
 
     @Column (name = "task_name")
-    @NotNull
     @NotEmpty
     private String name;
 
     @Column (name = "task_description")
-    @NotNull
     @NotEmpty
     private String description;
 
-    @Column (name = "task_verse_color")
-    @NotNull
+    @Column (name = "task_versecolor")
     @NotEmpty
     private String verseColor;
 
-    @Column
-    @NotNull
+    @Column (name = "task_material")
     @NotEmpty
     private String material;
+
+    @NotEmpty
+    private String taskStatus;
 
     @ManyToOne
     @JoinColumn (name = "order_id")

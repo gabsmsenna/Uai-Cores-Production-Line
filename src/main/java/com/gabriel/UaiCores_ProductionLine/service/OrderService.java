@@ -26,9 +26,8 @@ public class OrderService {
     public List<Order> getAllOrders() {
 
         try {
-            Sort sort = Sort.by("orderEntryDate").descending();
-            List<Order> ordersList = orderRepository.findAll(sort);
-            return Collections.unmodifiableList(ordersList);
+            Sort sort = Sort.by("orderEntryDate")   ;
+            return  orderRepository.findAll(sort);
         } catch (RuntimeException error) {
             System.err.println("Erro ao buscar os pedidos do sistema. " +
                     "Detalhes: " + error.getMessage());
@@ -38,10 +37,10 @@ public class OrderService {
     }
 
 
-    public Optional<Order> getOrderById(Long id) {
+    public Order getOrderById(Long id) {
 
-        Optional<Order> orderById = orderRepository.findById(id);
-        return orderById;
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Erro ao buscar o pedido de id " + id));
 
     }
 

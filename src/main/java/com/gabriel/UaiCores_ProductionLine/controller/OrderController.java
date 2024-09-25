@@ -2,14 +2,11 @@ package com.gabriel.UaiCores_ProductionLine.controller;
 
 import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.service.OrderService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController()
 @RequestMapping("/api/v1/order")
@@ -23,7 +20,7 @@ public class OrderController {
 
         try {
             Order savedOrder = orderService.saveOrder(order);
-            return new ResponseEntity<>(order, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
         } catch (RuntimeException error) {
             error.printStackTrace();
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -44,7 +41,7 @@ public class OrderController {
     @GetMapping("{id}")
     public ResponseEntity<?> getOrdersById (@PathVariable Long id) {
 
-        Optional<Order> order = orderService.getOrderById(id);
+        Order order = orderService.getOrderById(id);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
