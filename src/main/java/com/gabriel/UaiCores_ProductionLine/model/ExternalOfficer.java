@@ -1,5 +1,6 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.ExternalOfficer.CreateExternalOfficerDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,12 @@ public class ExternalOfficer implements Serializable {
 
     @Column(name = "externalofficer_password", nullable = false)
     private String password;
+
+    public ExternalOfficer(String name, String login, String password) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+    }
 
     public void setPassword(String password) {
         this.password = hashPassword(password);

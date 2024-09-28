@@ -1,5 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.ExternalOfficer.CreateExternalOfficerDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.ExternalOfficer.UpdateExternalOfficerDTO;
 import com.gabriel.UaiCores_ProductionLine.model.ExternalOfficer;
 import com.gabriel.UaiCores_ProductionLine.repository.ExternalOfficerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,13 @@ public class ExternalOfficerService {
     @Autowired
     private ExternalOfficerRepository externalOfficerRepository;
 
-    public ExternalOfficer createExternalOfficer(ExternalOfficer externalOfficerObj) {
-        return externalOfficerRepository.save(externalOfficerObj);
+    public Long createExternalOfficer(CreateExternalOfficerDTO externalOfficerDTO) {
+        var entityExternalOfficer = new ExternalOfficer(externalOfficerDTO.name(),
+                externalOfficerDTO.login(),
+                externalOfficerDTO.password());
+
+        var userSaved = externalOfficerRepository.save(entityExternalOfficer);
+        return userSaved.getId();
     }
 
     public List<ExternalOfficer> getAllExternalOfficers() {
@@ -23,24 +30,24 @@ public class ExternalOfficerService {
     }
 
     public Optional<ExternalOfficer> getExternalOfficerById(Long id) {
-        return externalOfficerRepository.findById(id);
+        var externalOfficer = externalOfficerRepository.findById(id);
+        return externalOfficer;
     }
 
-    public ExternalOfficer updateExOfficer(Long id, ExternalOfficer externalOfficerObj) {
-        Optional<ExternalOfficer> officerToBeUpdated = externalOfficerRepository.findById(id);
+    public void updateExOfficer(Long id,
+                                UpdateExternalOfficerDTO updateExternalOfficerDTO) {
 
-        if (officerToBeUpdated.isPresent()) {
-            ExternalOfficer officerUpdated = officerToBeUpdated.get();
+       var officerExists = externalOfficerRepository.findById(id);
+       if (officerExists.isPresent()) {
+            var externalOfficer = officerExists.get();
 
-            officerUpdated.setName(externalOfficerObj.getName());
-            officerUpdated.setLogin(externalOfficerObj.getLogin());
-            officerUpdated.setPassword(externalOfficerObj.getPassword());
+            if (updateExternalOfficerDTO.password() != null) {
+                externalOfficer.setPassword(updateExternalOfficerDTO.password());
+            }
 
-            return externalOfficerRepository.save(officerUpdated);
-        } else {
+            externalOfficerRepository.save(externalOfficer);
+       }
 
-            throw new  RuntimeException("Não foi possível atualizar esse funcionário | ID (" + id + ") não encontrado");
-        }
     }
 
 
