@@ -1,2 +1,0 @@
-ALTER TABLE task
-ADD COLUMN task_status TEXT NOT NULL
