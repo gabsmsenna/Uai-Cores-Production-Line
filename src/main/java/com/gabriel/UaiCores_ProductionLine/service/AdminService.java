@@ -1,5 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.AdminUser.CreateAdminDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.AdminUser.UpdateAdminDTO;
 import com.gabriel.UaiCores_ProductionLine.model.AdminUser;
 import com.gabriel.UaiCores_ProductionLine.repository.AdminUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,11 @@ public class AdminService {
     @Autowired
     private AdminUserRepository adminUserRepository;
 
-    public AdminUser createAdminUser(AdminUser adminUser) {
-        return adminUserRepository.save(adminUser);
+    public Long createAdminUser(CreateAdminDTO adminUser) {
+        var entity = new AdminUser(adminUser.name(), adminUser.login(), adminUser.password());
+        var userSaved = adminUserRepository.save(entity);
+
+        return userSaved.getId();
     }
 
     public List<AdminUser> getAllAdminUsers() {
@@ -25,19 +30,20 @@ public class AdminService {
         return adminUserRepository.findById(id);
     }
 
-    public AdminUser updateAdminUser(Long id, AdminUser adminUser) {
-        Optional<AdminUser> adminUserToBeUpdated = adminUserRepository.findById(id);
+    public void updateAdminUser(Long id, UpdateAdminDTO updateAdminDTO) {
+        var adminExists = adminUserRepository.findById(id);
 
-        if (adminUserToBeUpdated.isPresent()) {
-            AdminUser adminUserUpdated = adminUserToBeUpdated.get();
+        try {
+            if (adminExists.isPresent()) {
+                var admin = adminExists.get();
 
-            adminUserUpdated.setName(adminUser.getName());
-            adminUserUpdated.setLogin(adminUser.getLogin());
-            adminUserUpdated.setPassword(adminUser.getPassword());
-
-            return adminUserRepository.save(adminUserUpdated);
-        } else {
-            throw new RuntimeException("Não foi possível atualizar esse funcionário | ID (" + id + ") não encontrado");
+                if (updateAdminDTO.password() != null) {
+                    admin.setPassword(updateAdminDTO.password());
+                }
+                adminUserRepository.save(admin);
+            }
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage() + "Não foi possível atualizar o usuário");
         }
     }
 

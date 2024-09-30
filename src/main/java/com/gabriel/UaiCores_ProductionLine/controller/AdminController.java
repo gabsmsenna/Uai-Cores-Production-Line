@@ -1,11 +1,15 @@
 package com.gabriel.UaiCores_ProductionLine.controller;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.AdminUser.CreateAdminDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.AdminUser.UpdateAdminDTO;
 import com.gabriel.UaiCores_ProductionLine.model.AdminUser;
 import com.gabriel.UaiCores_ProductionLine.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,14 +31,10 @@ public class AdminController {
     }
 
     @PostMapping()
-    public ResponseEntity<AdminUser> postAdminUser(@RequestBody  AdminUser adminUser) {
-        try {
-            AdminUser adminUserObj = adminService.createAdminUser(adminUser);
-            return new ResponseEntity<>(adminUserObj, HttpStatus.CREATED);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        }
+    public ResponseEntity<AdminUser> postAdminUser(@RequestBody CreateAdminDTO adminUser) {
+        var adminId = adminService.createAdminUser(adminUser);
+
+        return ResponseEntity.created(URI.create("/v1/admin " + adminId)).build();
     }
 
     @GetMapping("/{id}")
@@ -49,14 +49,10 @@ public class AdminController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<AdminUser> updateAdmin(@PathVariable Long id, @RequestBody AdminUser adminUser) {
+    public ResponseEntity<Void> updateAdmin(@PathVariable Long id, @RequestBody UpdateAdminDTO adminUser) {
 
-        try {
-            AdminUser adminUserToBeUpdated = adminService.updateAdminUser(id, adminUser);
-            return new ResponseEntity<>(adminUserToBeUpdated, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        }
+        adminService.updateAdminUser(id, adminUser);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/delete/{id}")

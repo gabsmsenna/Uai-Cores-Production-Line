@@ -1,7 +1,6 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Table (name = "admin_user")
 public class AdminUser {
 
-
-
     @Id
     @GeneratedValue()
     private Long id;
@@ -22,7 +19,7 @@ public class AdminUser {
     @Column (unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String login;
 
     @Column (nullable = false)
