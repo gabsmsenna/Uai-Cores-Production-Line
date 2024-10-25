@@ -1,11 +1,14 @@
 package com.gabriel.UaiCores_ProductionLine.controller;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.CreateOrderDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController()
@@ -16,15 +19,10 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping()
-    public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> saveOrder(@RequestBody CreateOrderDTO orderDTO) {
+        var orderId = orderService.createOrder(orderDTO);
 
-        try {
-            Order savedOrder = orderService.saveOrder(order);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
-        } catch (RuntimeException error) {
-            error.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+        return ResponseEntity.created(URI.create("/v1/order" + orderId)).build();
     }
 
     @GetMapping

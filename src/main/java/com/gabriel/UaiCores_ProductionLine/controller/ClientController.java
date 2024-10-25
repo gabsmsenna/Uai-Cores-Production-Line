@@ -1,6 +1,8 @@
 package com.gabriel.UaiCores_ProductionLine.controller;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Client.ClientOrdersDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Client;
+import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,5 +61,12 @@ public class ClientController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @GetMapping("/{clientId}/orders")
+    public ResponseEntity<List<ClientOrdersDTO>> ordersList(@PathVariable Long clientId) {
+        var orders = clientService.listOrders(clientId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(orders);
     }
 }

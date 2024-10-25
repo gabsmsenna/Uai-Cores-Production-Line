@@ -1,5 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.controller;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.CreateTaskDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.GetTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Task;
 import com.gabriel.UaiCores_ProductionLine.service.TaskService;
 import org.apache.coyote.Response;
@@ -8,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,24 +22,20 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<Task> postTask(@RequestBody Task task) {
+    public ResponseEntity<Task> postTask(@RequestBody CreateTaskDTO createTaskDTO) {
 
-        try {
-            Task savedOrder = taskService.createTask(task);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
-        } catch (RuntimeException error) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        var taskId = taskService.createTask(createTaskDTO);
+        return ResponseEntity.created(URI.create("/api/v1/task/" + taskId)).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        try {
-            List<Task> taskList = taskService.getAllTasks();
-            return ResponseEntity.ok(taskList);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> getAllTasks() {
+        List<GetTaskDTO> tasks = taskService.getAllTasks();
+
+        if (tasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")

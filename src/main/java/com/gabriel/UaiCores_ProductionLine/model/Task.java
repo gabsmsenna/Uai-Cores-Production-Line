@@ -50,6 +50,15 @@ public class Task {
 
     @ManyToOne
     @JoinColumn (name = "order_id")
-    @JsonIgnore
     private Order order;
+
+    public Task(Integer amount, String name, String description, String verseColor, String material, String taskStatus, Order order) {
+        this.amount = amount;
+        this.name = name;
+        this.description = description;
+        this.verseColor = verseColor;
+        this.material = material;
+        this.taskStatus = taskStatus;
+        this.order = order;
+    }
 }

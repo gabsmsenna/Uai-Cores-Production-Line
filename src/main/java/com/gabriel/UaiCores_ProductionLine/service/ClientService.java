@@ -1,9 +1,15 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Client.ClientOrdersDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.GetTasksOnOrderDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Client;
+import com.gabriel.UaiCores_ProductionLine.model.Task;
 import com.gabriel.UaiCores_ProductionLine.repository.ClientRepository;
+import com.gabriel.UaiCores_ProductionLine.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +19,9 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     public Client saveClient (Client client) {
         return clientRepository.save(client);
@@ -48,4 +57,32 @@ public class ClientService {
             throw new RuntimeException("Não foi possível excluir este cliente! | ID " + id + " não encontrado na aplicação");
         }
     }
+
+    public List<ClientOrdersDTO> listOrders(Long clientId) {
+        // Busca o cliente pelo ID
+        var client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+
+        // Mapeia cada pedido do cliente para ClientOrdersDTO
+        return client.getOrders().stream()
+                .map(order -> {
+                    // Busca as tarefas associadas ao pedido
+                    List<Task> tasks = taskRepository.findByOrderId(order.getId());
+
+                    // Converte as tarefas para o DTO GetTasksOnOrderDTO
+                    List<GetTasksOnOrderDTO> taskDTOs = tasks.stream()
+                            .map(task -> new GetTasksOnOrderDTO(task.getAmount(), task.getName(), task.getTaskStatus()))
+                            .toList();
+
+                    // Retorna o pedido mapeado para ClientOrdersDTO
+                    return new ClientOrdersDTO(
+                            order.getOrderEntryDate(),
+                            order.getOrderDeliveryDate(),
+                            order.getOrderStatus(),
+                            taskDTOs
+                    );
+                })
+                .toList();
+    }
+
 }

@@ -1,7 +1,11 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.CreateOrderDTO;
+import com.gabriel.UaiCores_ProductionLine.model.Client;
 import com.gabriel.UaiCores_ProductionLine.model.Order;
+import com.gabriel.UaiCores_ProductionLine.repository.ClientRepository;
 import com.gabriel.UaiCores_ProductionLine.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -16,11 +20,21 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
     @Transactional
-    public Order saveOrder (Order order) {
-        order.setId(null);
-        order = orderRepository.save(order);
-        return order;
+    public Long createOrder(CreateOrderDTO orderDTO) {
+        Client clientEntity = clientRepository.findById(orderDTO.clientId())
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        var orderEntity = new Order(orderDTO.orderEntryDate(),
+                orderDTO.orderDeliveryDate(),
+                orderDTO.orderStatus(),
+                clientEntity);
+
+        var orderSaved = orderRepository.save(orderEntity);
+        return orderSaved.getId();
     }
 
     public List<Order> getAllOrders() {

@@ -51,5 +51,10 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Task> tasks = new ArrayList<>();
 
-
+    public Order(LocalDate orderEntryDate, LocalDate orderDeliveryDate, String orderStatus, Client client) {
+        this.orderEntryDate = orderEntryDate;
+        this.orderDeliveryDate = orderDeliveryDate;
+        this.orderStatus = orderStatus;
+        this.client = client;
+    }
 }
