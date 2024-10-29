@@ -1,6 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.controller;
 
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.CreateOrderDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.GetOrderDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/api/v1/order")
@@ -27,19 +29,19 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<?> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
+        List<GetOrderDTO> ordersDtos = orderService.getAllOrders();
 
-        if (orders.isEmpty()) {
+        if (ordersDtos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        return new ResponseEntity<>(ordersDtos, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<?> getOrdersById (@PathVariable Long id) {
 
-        Order order = orderService.getOrderById(id);
+        Optional<GetOrderDTO> order = orderService.getOrderById(id);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 

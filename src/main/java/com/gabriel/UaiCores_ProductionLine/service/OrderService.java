@@ -1,6 +1,8 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.CreateOrderDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.GetOrderDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.GetTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Client;
 import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.repository.ClientRepository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -37,11 +40,21 @@ public class OrderService {
         return orderSaved.getId();
     }
 
-    public List<Order> getAllOrders() {
+    public List<GetOrderDTO> getAllOrders() {
 
         try {
             Sort sort = Sort.by("orderEntryDate")   ;
-            return  orderRepository.findAll(sort);
+            List<Order> ordersEntityList = orderRepository.findAll(sort);
+
+            return ordersEntityList.stream()
+                    .map(order -> new GetOrderDTO(
+                            order.getOrderEntryDate(),
+                            order.getOrderDeliveryDate(),
+                            order.getOrderStatus(),
+                            order.getClient() != null ? order.getClient().getName() : null
+                    ))
+                    .collect(Collectors.toUnmodifiableList());
+
         } catch (RuntimeException error) {
             System.err.println("Erro ao buscar os pedidos do sistema. " +
                     "Detalhes: " + error.getMessage());
@@ -51,10 +64,21 @@ public class OrderService {
     }
 
 
-    public Order getOrderById(Long id) {
+    public Optional<GetOrderDTO> getOrderById(Long id) {
 
-        return orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Erro ao buscar o pedido de id " + id));
+        try {
+            Optional<Order> orderEntity = orderRepository.findById(id);
+            return orderEntity.map(order -> new GetOrderDTO(
+                    order.getOrderEntryDate(),
+                    order.getOrderDeliveryDate(),
+                    order.getOrderStatus(),
+                    order.getClient() != null ? order.getClient().getName() : null
+            ));
+        } catch (RuntimeException error) {
+            System.err.println("Erro ao buscar este pedido no sistema. " +
+                    "Detalhes: " + error.getMessage());
+            throw error;
+        }
 
     }
 
@@ -85,6 +109,5 @@ public class OrderService {
             System.err.println("Erro ao excluir o id " + id + ": " + error.getMessage());
         }
     }
-
 
 }
