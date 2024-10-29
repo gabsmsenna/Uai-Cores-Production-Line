@@ -51,7 +51,6 @@ public class TaskService {
             List<Task> taskList = taskRepository.findAll();
             return taskList.stream()
                     .map(task -> new GetTaskDTO(
-                            task.getId(),
                             task.getAmount(),
                             task.getName(),
                             task.getDescription(),
@@ -69,10 +68,24 @@ public class TaskService {
         }
     }
 
-    public Optional<Task> getTaskById(Long id) {
+    public Optional<GetTaskDTO> getTaskById(Long id) {
 
-        Task task = taskRepository.findById(id).get();
-        return Optional.of(task);
+        try {
+            Optional<Task> taskEntity = taskRepository.findById(id);
+            return taskEntity.map(task -> new GetTaskDTO(
+                    task.getAmount(),
+                    task.getName(),
+                    task.getDescription(),
+                    task.getVerseColor(),
+                    task.getMaterial(),
+                    task.getTaskStatus(),
+                    task.getOrder() != null ? task.getOrder().getId() : null
+            ));
+        } catch (RuntimeException error) {
+            System.err.println("Erro ao buscar ordem no sistema" +
+                    "Detalhes: " + error.getMessage());
+            return Optional.empty();
+        }
 
     }
 

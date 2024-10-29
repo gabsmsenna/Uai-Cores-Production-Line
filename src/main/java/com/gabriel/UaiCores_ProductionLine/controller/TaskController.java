@@ -40,7 +40,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTaskById(@PathVariable Long id) {
-        Optional<Task> task = taskService.getTaskById(id);
+        Optional<GetTaskDTO> task = taskService.getTaskById(id);
         return task.isPresent() ? ResponseEntity.ok(task.get()) : ResponseEntity.notFound().build();
     }
 
