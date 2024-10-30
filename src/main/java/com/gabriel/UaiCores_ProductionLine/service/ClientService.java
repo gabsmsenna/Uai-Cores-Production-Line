@@ -59,22 +59,18 @@ public class ClientService {
     }
 
     public List<ClientOrdersDTO> listOrders(Long clientId) {
-        // Busca o cliente pelo ID
         var client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
 
-        // Mapeia cada pedido do cliente para ClientOrdersDTO
         return client.getOrders().stream()
                 .map(order -> {
-                    // Busca as tarefas associadas ao pedido
+
                     List<Task> tasks = taskRepository.findByOrderId(order.getId());
 
-                    // Converte as tarefas para o DTO GetTasksOnOrderDTO
                     List<GetTasksOnOrderDTO> taskDTOs = tasks.stream()
                             .map(task -> new GetTasksOnOrderDTO(task.getAmount(), task.getName(), task.getTaskStatus()))
                             .toList();
 
-                    // Retorna o pedido mapeado para ClientOrdersDTO
                     return new ClientOrdersDTO(
                             order.getOrderEntryDate(),
                             order.getOrderDeliveryDate(),

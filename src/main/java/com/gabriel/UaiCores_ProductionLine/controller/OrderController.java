@@ -45,16 +45,16 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder (@PathVariable Long id, @RequestBody Order order) {
-
-        try {
-            Order updatedOrder = orderService.updateOrder(id, order);
-            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
-        } catch (RuntimeException error) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(order);
-        }
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Order> updateOrder (@PathVariable Long id, @RequestBody Object orderDto) {
+//
+//        try {
+//            Order updatedOrder = orderService.updateOrder(id, order);
+//            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+//        } catch (RuntimeException error) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(order);
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Order> deleteOrder (@PathVariable Long id) {

@@ -1,9 +1,13 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.AdminUpdateOrderDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.CreateOrderDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.ExternalOfficerUpdateOrderDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Order.GetOrderDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.GetTaskDTO;
+import com.gabriel.UaiCores_ProductionLine.model.AdminUser;
 import com.gabriel.UaiCores_ProductionLine.model.Client;
+import com.gabriel.UaiCores_ProductionLine.model.ExternalOfficer;
 import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.repository.ClientRepository;
 import com.gabriel.UaiCores_ProductionLine.repository.OrderRepository;
@@ -83,22 +87,22 @@ public class OrderService {
     }
 
     @Transactional
-    public Order updateOrder (Long id, Order order) {
-        Optional<Order> orderToBeUpdated = orderRepository.findById(id);
+    public Order updateOrder (Long id, Object updateDto, Object user) {
+        Order orderToBeUpdated = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
-        if (orderToBeUpdated.isPresent()) {
+        if (user instanceof AdminUser && updateDto instanceof AdminUpdateOrderDTO) {
 
-            Order orderUpdated = orderToBeUpdated.get();
-            orderUpdated.setOrderStatus(order.getOrderStatus());
-            orderUpdated.setOrderEntryDate(order.getOrderEntryDate());
-            orderUpdated.setOrderDeliveryDate(order.getOrderDeliveryDate());
-            orderUpdated.setTasks(order.getTasks());
-
-            return orderRepository.save(orderUpdated);
+            AdminUpdateOrderDTO adminDto = (AdminUpdateOrderDTO) updateDto;
+            orderToBeUpdated.setOrderEntryDate(adminDto.orderEntryDate());
+            orderToBeUpdated.setOrderDeliveryDate(adminDto.orderDeliveryDate());
+            orderToBeUpdated.setOrderStatus(adminDto.orderStatus());
+        } else if (user instanceof ExternalOfficer && updateDto instanceof ExternalOfficerUpdateOrderDTO) {
+            ExternalOfficerUpdateOrderDTO externalOfficerUpdateOrderDTO = (ExternalOfficerUpdateOrderDTO) updateDto;
+            orderToBeUpdated.setOrderStatus(externalOfficerUpdateOrderDTO.status());
         } else {
-
-            throw new RuntimeException("Não foi possível atualizar esse funcionário | ID (" + id + ") não encontrado");
+            throw new IllegalArgumentException("Permissão negada ou argumento inválido para esse tipo de usuário");
         }
+        return orderRepository.save(orderToBeUpdated);
     }
 
     public void deleteOrderById(Long id) {
