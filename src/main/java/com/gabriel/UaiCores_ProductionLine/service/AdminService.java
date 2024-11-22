@@ -1,6 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.AdminUser.CreateAdminDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.AdminUser.GetAdminUserDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.AdminUser.UpdateAdminDTO;
 import com.gabriel.UaiCores_ProductionLine.model.AdminUser;
 import com.gabriel.UaiCores_ProductionLine.repository.AdminUserRepository;
@@ -26,8 +27,12 @@ public class AdminService {
         return adminUserRepository.findAll();
     }
 
-    public Optional<AdminUser> getAdminUserById(Long id) {
-        return adminUserRepository.findById(id);
+    public Optional<GetAdminUserDTO> getAdminUserDTOById(Long id) {
+       var adminUserEntity = adminUserRepository.findById(id);
+       return adminUserEntity.map(adminUser -> new GetAdminUserDTO(
+               adminUser.getName(),
+               adminUser.getLogin()
+       ));
     }
 
     public void updateAdminUser(Long id, UpdateAdminDTO updateAdminDTO) {

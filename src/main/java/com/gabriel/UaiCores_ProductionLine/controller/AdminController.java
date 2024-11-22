@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -39,7 +37,7 @@ public class AdminController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getAdminById(@PathVariable Long id) {
-        Optional<AdminUser> adminUserById = adminService.getAdminUserById(id);
+        var adminUserById = adminService.getAdminUserDTOById(id);
         
         if (adminUserById.isPresent()) {
             return new ResponseEntity<>(adminUserById.get(), HttpStatus.OK);
@@ -58,7 +56,7 @@ public class AdminController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAdmin(@PathVariable Long id) {
 
-        if (adminService.getAdminUserById(id).isPresent()) {
+        if (adminService.getAdminUserDTOById(id).isPresent()) {
             adminService.deleteAdminUser(id);
             return ResponseEntity.noContent().build();
         } else {
