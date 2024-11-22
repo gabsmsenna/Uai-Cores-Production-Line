@@ -1,6 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.service;
 
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.ExternalOfficer.CreateExternalOfficerDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.ExternalOfficer.GetOfficerDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.ExternalOfficer.UpdateExternalOfficerDTO;
 import com.gabriel.UaiCores_ProductionLine.model.ExternalOfficer;
 import com.gabriel.UaiCores_ProductionLine.repository.ExternalOfficerRepository;
@@ -29,10 +30,23 @@ public class ExternalOfficerService {
         return externalOfficerRepository.findAll();
     }
 
-    public Optional<ExternalOfficer> getExternalOfficerById(Long id) {
-        var externalOfficer = externalOfficerRepository.findById(id);
-        return externalOfficer;
+    public Optional<GetOfficerDTO> getExternalOfficerDTOById(Long id) {
+        try {
+            Optional<ExternalOfficer> externalOfficer = externalOfficerRepository.findById(id);
+            return externalOfficer.map( officer -> new GetOfficerDTO(
+                    officer.getName(),
+                    officer.getPassword()
+            ));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
+
+    public Optional<ExternalOfficer> getExternalOfficerById(Long id) {
+        return externalOfficerRepository.findById(id);
+    }
+
+
 
     public void updateExOfficer(Long id,
                                 UpdateExternalOfficerDTO updateExternalOfficerDTO) {

@@ -38,7 +38,7 @@ public class ExternalOfficerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        var optionalExternalOfficer = externalOfficerService.getExternalOfficerById(id);
+        var optionalExternalOfficer = externalOfficerService.getExternalOfficerDTOById(id);
 
         if (optionalExternalOfficer.isPresent()) {
             return ResponseEntity.ok(optionalExternalOfficer.get());
