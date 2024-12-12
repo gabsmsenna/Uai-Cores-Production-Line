@@ -2,6 +2,7 @@ package com.gabriel.UaiCores_ProductionLine.controller;
 
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.CreateTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.GetTaskDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.UpdateTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Task;
 import com.gabriel.UaiCores_ProductionLine.service.TaskService;
 import org.apache.coyote.Response;
@@ -45,15 +46,16 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody UpdateTaskDTO task) {
 
         try {
-            Task updatedTask = taskService.updateTask(id, task);
-            return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+            taskService.updateTask(id, task);
+            return ResponseEntity.noContent().build();
         } catch (RuntimeException error) {
             error.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 }

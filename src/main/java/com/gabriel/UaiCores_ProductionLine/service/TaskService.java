@@ -2,11 +2,13 @@ package com.gabriel.UaiCores_ProductionLine.service;
 
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.CreateTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.GetTaskDTO;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.UpdateTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.model.Task;
 import com.gabriel.UaiCores_ProductionLine.repository.OrderRepository;
 import com.gabriel.UaiCores_ProductionLine.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,7 @@ public class TaskService {
                 order
         );
         var taskSaved = taskRepository.save(taskEntity);
-        return  taskSaved.getId();
+        return taskSaved.getId();
     }
 
     public List<GetTaskDTO> getAllTasks() {
@@ -89,9 +91,24 @@ public class TaskService {
 
     }
 
-    public Task updateTask(Long id, Task task) {
+    @Transactional
+    public void updateTask(Long id, UpdateTaskDTO taskDto) {
 
-        return null;
+        Task taskToBeUpdated = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task not found"));
 
+        try {
+
+            taskToBeUpdated.setTaskStatus(taskDto.taskStatus());
+            taskToBeUpdated.setDescription(taskDto.description());
+            taskToBeUpdated.setMaterial(taskDto.material());
+            taskToBeUpdated.setAmount(taskDto.amount());
+
+            taskRepository.save(taskToBeUpdated);
+        } catch (IllegalArgumentException | IllegalStateException error) {
+            // Substitua por um logger, se disponível
+            System.err.println("Erro ao atualizar serviço no sistema. Detalhes: " + error.getMessage());
+            throw new RuntimeException("Erro ao atualizar a tarefa. Tente novamente mais tarde.", error);
+        }
     }
+
 }
