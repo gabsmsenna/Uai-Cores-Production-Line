@@ -1,0 +1,7 @@
+INSERT INTO role (role_id, name)
+VALUES (1, 'admin')
+ON CONFLICT (role_id) DO NOTHING;
+
+INSERT INTO role (role_id, name)
+VALUES (2, 'external_officer')
+ON CONFLICT (role_id) DO NOTHING;

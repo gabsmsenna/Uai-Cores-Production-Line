@@ -21,8 +21,6 @@ public class SecurityConfig {
                            authorizeConfig.requestMatchers(HttpMethod.GET, "/api/v1/order/{id}").permitAll();
                            authorizeConfig.requestMatchers(HttpMethod.GET, "/api/v1/task").permitAll();
                            authorizeConfig.requestMatchers(HttpMethod.GET, "/api/v1/task/{id}").permitAll();
-                           authorizeConfig.requestMatchers(HttpMethod.DELETE, "/api/v1/task/{id}").permitAll();
-                           authorizeConfig.requestMatchers(HttpMethod.DELETE, "/api/v1/order/{id}").permitAll();
                            authorizeConfig.requestMatchers("/logout").permitAll();
                            authorizeConfig.anyRequest().authenticated();
                         }
