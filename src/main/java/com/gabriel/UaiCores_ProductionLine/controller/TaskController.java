@@ -3,6 +3,7 @@ package com.gabriel.UaiCores_ProductionLine.controller;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.CreateTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.GetTaskDTO;
 import com.gabriel.UaiCores_ProductionLine.controller.dtos.Task.UpdateTaskDTO;
+import com.gabriel.UaiCores_ProductionLine.model.Order;
 import com.gabriel.UaiCores_ProductionLine.model.Task;
 import com.gabriel.UaiCores_ProductionLine.service.TaskService;
 import org.apache.coyote.Response;
@@ -54,6 +55,17 @@ public class TaskController {
         } catch (RuntimeException error) {
             error.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Order> deleteOrder (@PathVariable Long id) {
+
+        try {
+            taskService.deleteTaskById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException error) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

@@ -111,4 +111,11 @@ public class TaskService {
         }
     }
 
+    public void deleteTaskById(Long id) {
+        try {
+            taskRepository.deleteById(id);
+        } catch (RuntimeException error) {
+            System.err.println("Erro ao excluir o id " + id + ": " + error.getMessage());
+        }
+    }
 }
