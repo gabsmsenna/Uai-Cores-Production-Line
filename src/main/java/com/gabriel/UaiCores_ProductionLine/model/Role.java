@@ -18,6 +18,7 @@ public class Role {
     private String name;
 
     public enum RoleType {
+
         ADMIN(1L),
         EXTERNAL_OFFICER(2L );
 
