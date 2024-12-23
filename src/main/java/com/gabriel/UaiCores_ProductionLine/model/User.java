@@ -1,6 +1,6 @@
 package com.gabriel.UaiCores_ProductionLine.model;
 
-import com.gabriel.UaiCores_ProductionLine.controller.dtos.LoginRequest;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Request.LoginRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.gabriel.UaiCores_ProductionLine.controller;
 
-import com.gabriel.UaiCores_ProductionLine.controller.dtos.LoginRequest;
-import com.gabriel.UaiCores_ProductionLine.controller.dtos.LoginResponse;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Request.LoginRequest;
+import com.gabriel.UaiCores_ProductionLine.controller.dtos.Request.LoginResponse;
 import com.gabriel.UaiCores_ProductionLine.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
